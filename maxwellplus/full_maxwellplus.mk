@@ -15,25 +15,25 @@
 #
 
 # This file is the build configuration for a full Android
-# build for maxwell2lite hardware. This cleanly combines a set of
+# build for maxwellplus hardware. This cleanly combines a set of
 # device-specific aspects (drivers) with a device-agnostic
 # product configuration (apps). Except for a few implementation
 # details, it only fundamentally contains two inherit-product
-# lines, full and maxwell2lite, hence its name.
+# lines, full and maxwellplus, hence its name.
 
 # Inherit from the common open source product configuration
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base.mk)
 
-# Inherit the maxwell2lite definitions
-$(call inherit-product, device/bq/maxwell2lite/device.mk)
+# Inherit the maxwellplus definitions
+$(call inherit-product, device/bq/maxwellplus/device.mk)
 
 # Inherit the rockchip-common definitions
 $(call inherit-product, device/bq/rockchip-common/device-common.mk)
 $(call inherit-product, vendor/bq/rockchip-common/rockchip-vendor.mk)
 
 # Set those variables here to overwrite the inherited values.
-PRODUCT_DEVICE := maxwell2lite
-PRODUCT_NAME := full_maxwell2lite
+PRODUCT_DEVICE := maxwellplus
+PRODUCT_NAME := full_maxwellplus
 PRODUCT_BRAND := bq
-PRODUCT_MODEL := bq Maxwell 2 Lite
+PRODUCT_MODEL := bq Maxwell Plus
 PRODUCT_MANUFACTURER := bq
