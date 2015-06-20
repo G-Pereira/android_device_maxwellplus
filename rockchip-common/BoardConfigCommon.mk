@@ -36,6 +36,7 @@ TARGET_GLOBAL_CPPFLAGS += -mtune=cortex-a9 -mfpu=neon -mfloat-abi=softfp
 BOARD_EGL_CFG := device/bq/rockchip-common/prebuilt/egl.cfg
 USE_OPENGL_RENDERER := true
 ENABLE_WEBGL := true
+PRODUCT_LOCALES := es_ES
 TARGET_FORCE_CPU_UPLOAD := true
 
 # Wi-Fi
@@ -63,9 +64,17 @@ BOARD_KERNEL_PAGESIZE := 16384
 BOARD_CUSTOM_BOOTIMG_MK := device/bq/rockchip-common/mkbootimg.mk
 
 # Recovery
-RECOVERY_FSTAB_VERSION := 2
-TARGET_RECOVERY_FSTAB := device/bq/rockchip-common/rootdir/fstab.rk30board
 TARGET_USERIMAGES_USE_EXT4 := true
 BOARD_HAS_LARGE_FILESYSTEM := true
 BOARD_HAS_NO_SELECT_BUTTON := true
-BOARD_UMS_LUNFILE := /sys/class/android_usb/android0/f_mass_storage/lun/file
+
+# TWRP
+DEVICE_RESOLUTION := 1024x600
+RECOVERY_SDCARD_ON_DATA := true
+TW_NO_SCREEN_TIMEOUT := true
+TW_INCLUDE_JB_CRYPTO := true
+TW_INTERNAL_STORAGE_PATH := "/data/media"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+TW_BRIGHTNESS_PATH := /sys/devices/platform/rk29_backlight/backlight/rk28_bl/brightness

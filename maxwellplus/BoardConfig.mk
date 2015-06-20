@@ -33,3 +33,20 @@ BOARD_FLASH_BLOCK_SIZE := 16384
 # Kernel
 TARGET_KERNEL_SOURCE := kernel/bq/maxwellplus
 TARGET_KERNEL_CONFIG := cyanogenmod_maxwellplus_defconfig
+
+# USB Mounting
+TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun/file
+
+#Recovery flags
+RECOVERY_FSTAB_VERSION := 1
+
+# TWRP specific build flags
+DEVICE_RESOLUTION := 1024x600
+RECOVERY_SDCARD_ON_DATA := true
+TW_NO_SCREEN_TIMEOUT := true
+TW_INCLUDE_JB_CRYPTO := true
+TW_INTERNAL_STORAGE_PATH := "/data/media"
+TW_INTERNAL_STORAGE_MOUNT_POINT := "data"
+TW_EXTERNAL_STORAGE_PATH := "/external_sd"
+TW_EXTERNAL_STORAGE_MOUNT_POINT := "external_sd"
+TW_BRIGHTNESS_PATH := /sys/devices/platform/rk29_backlight/backlight/rk28_bl/brightness
