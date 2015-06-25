@@ -114,7 +114,7 @@
 
 
 
-//#define MMA8452_IIC_ADDR 	    0x98  
+//#define MMA8452_IIC_ADDR 	    0x98
 #define MMA8452_REG_LEN         11
 #define MMA8452_GRAVITY_STEP    156 //2g full scale range
 #define MMA8452_PRECISION       8 //8bit data
@@ -126,4 +126,3 @@
 
 
 #endif
-

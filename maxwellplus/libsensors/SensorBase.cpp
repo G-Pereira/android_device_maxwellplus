@@ -54,10 +54,10 @@ int SensorBase::open_device() {
         dev_fd = open(dev_name, O_RDONLY);
         if(dev_fd<0)
         {
-			LOGD("Couldn't open %s (%s)", dev_name, strerror(errno));
+			LOGD("Cojones!! %s (%s)", dev_name, strerror(errno));
 			return -errno;
         }
-        
+
     }
     return 0;
 }
