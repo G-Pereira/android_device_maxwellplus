@@ -49,7 +49,7 @@ typedef		unsigned char	    uint8;
 #define RKNAND_GET_VENDOR_SECTOR1       _IOW('v', 18, unsigned int)
 #define RKNAND_STORE_VENDOR_SECTOR1     _IOW('v', 19, unsigned int)
 
-#define DRM_KEY_OP_TAG              0x4B4D5244 // "DRMK"
+#define DRM_KEY_OP_TAG              0x4B4D5244 // "DRMK" 
 #define SN_SECTOR_OP_TAG            0x41444E53 // "SNDA"
 #define DIASBLE_SECURE_BOOT_OP_TAG  0x42534444 // "DDSB"
 #define ENASBLE_SECURE_BOOT_OP_TAG  0x42534E45 // "ENSB"
@@ -97,7 +97,7 @@ static int sensor_get_calibration_from_vendor1(void)
 
     ret = ioctl(sCaliFd, RKNAND_GET_VENDOR_SECTOR1, &gCalibrationData);
     if(ret){
-        ALOGE("get vendor_sector error:%s\n",strerror(errno));
+        ALOGE("get vendor_sector error:%s\n",strerror(errno));		
 		close(sCaliFd);
         return -1;
     }
@@ -121,12 +121,12 @@ static int sensor_get_calibration_from_vendor1(void)
 		gAccelCaliData[2] = gAccelCaliData[2]*1000;
 
 	}
-
+	
 	close(sCaliFd);
 	sCaliFd = -1;
 
 	ALOGD("%s:gAccelCaliData=%d,%d,%d\n",__func__, gAccelCaliData[0], gAccelCaliData[1], gAccelCaliData[2]);
-
+	
     return 0;
 }
 
@@ -146,7 +146,7 @@ struct sensors_poll_context_t {
 private:
     enum {
         mma             = 0,
-        numSensorDrivers = 1,
+        numSensorDrivers,
         numFds,
     };
 
@@ -154,7 +154,7 @@ private:
     static const char WAKE_MESSAGE = 'W';
     struct pollfd mPollFds[numFds];
     int mWritePipeFd;
-    SensorBase* mSensors[1];
+    SensorBase* mSensors[numSensorDrivers];
 
     int handleToDriver(int handle) const {
         switch (handle) {
@@ -170,7 +170,7 @@ private:
 sensors_poll_context_t::sensors_poll_context_t()
 {
 	D("Entered.");
-
+	
     mSensors[mma] = new MmaSensor();
     mPollFds[mma].fd = mSensors[mma]->getFd();
     mPollFds[mma].events = POLLIN;
@@ -190,7 +190,7 @@ sensors_poll_context_t::sensors_poll_context_t()
 }
 
 sensors_poll_context_t::~sensors_poll_context_t() {
-    for (int i=0 ; i<1 ; i++) {
+    for (int i=0 ; i<numSensorDrivers ; i++) {
         delete mSensors[i];
     }
     close(mPollFds[wake].fd);
@@ -202,7 +202,7 @@ int sensors_poll_context_t::activate(int handle, int enabled) {
     if (index < 0) return index;
 #if defined(CALIBRATION_SUPPORT)
 	if((index == mma) && enabled)
-	{
+	{			
 		sensor_get_calibration_from_vendor1();
 	}
 #endif
@@ -230,7 +230,7 @@ int sensors_poll_context_t::pollEvents(sensors_event_t* data, int count)
 
     do {
         // see if we have some leftover from the last poll()
-        for (int i=0 ; count && i<1 ; i++) {
+        for (int i=0 ; count && i<numSensorDrivers ; i++) {
             SensorBase* const sensor(mSensors[i]);
             if ((mPollFds[i].revents & POLLIN) || (sensor->hasPendingEvents())) {
                 int nb = sensor->readEvents(data, count);	// num of evens received.
@@ -313,7 +313,7 @@ static int poll__poll(struct sensors_poll_device_t *dev,
 
 int init_nusensors(hw_module_t const* module, hw_device_t** device)
 {
-	LOGD("%s - tbd\n",SENSOR_VERSION_AND_TIME);
+	LOGD("%s\n",SENSOR_VERSION_AND_TIME);
     int status = -EINVAL;
 
     sensors_poll_context_t *dev = new sensors_poll_context_t();

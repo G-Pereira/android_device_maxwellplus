@@ -42,7 +42,7 @@ static const struct sensor_t sSensorList[] = {
           .power      = 0.2f,
           .minDelay   = 0,
           .reserved   = {}
-        },
+        },		
 };
 
 static int open_sensors(const struct hw_module_t* module, const char* name,
@@ -65,7 +65,7 @@ static struct hw_module_methods_t sensors_module_methods = {
         .version_major = 1,
         .version_minor = 0,
         .id = SENSORS_HARDWARE_MODULE_ID,
-        .name = "MMA8452Q Sensors Module - TBC",
+        .name = "MMA8452Q Sensors Module",
         .author = "The RKdroid Project",
         .methods = &sensors_module_methods,
     },

@@ -27,7 +27,7 @@
 #include <hardware/hardware.h>
 #include <hardware/sensors.h>
 
-#include "mma8452_kernel.h"            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îª HAL ï¿½á¹©ï¿½Ä¹ï¿½ï¿½Ü½Ó¿ï¿½. Ó¦ï¿½ï¿½ï¿½Ã¸ï¿½ï¿½Ó³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½.
+#include "mma8452_kernel.h"            // ÉùÃ÷Çý¶¯Îª HAL Ìá¹©µÄ¹¦ÄÜ½Ó¿Ú. Ó¦¸ÃÓÃ¸ü¼Ó³éÏóµÄÎÄ¼þÃû.
 
 
 //#define ENABLE_DEBUG_LOG
@@ -60,13 +60,13 @@ int init_nusensors(hw_module_t const* module, hw_device_t** device);
 #define ARRAY_SIZE(a) (sizeof(a) / sizeof(a[0]))
 
 #define ID_A	(0)
-/*#define ID_M	(1)
+#define ID_M	(1)
 #define ID_O	(2)
 #define ID_P  	(3)
 #define ID_L	(4)
 #define ID_GY	(5)
 #define ID_PR	(6)
-#define ID_TMP	(7)*/
+#define ID_TMP	(7)
 
 
 /*****************************************************************************/
@@ -77,18 +77,18 @@ int init_nusensors(hw_module_t const* module, hw_device_t** device);
 
 /* the CM3602 is a binary proximity sensor that triggers around 9 cm on
  * this hardware */
-//#define PROXIMITY_THRESHOLD_CM  9.0f 
+#define PROXIMITY_THRESHOLD_CM  9.0f
 
 /*****************************************************************************/
 
 #define MMA_DEVICE_NAME     GSENSOR_DEV_PATH
-/** akm sensor(M ï¿½ï¿½ O sensor) ï¿½Ä¿ï¿½ï¿½ï¿½ï¿½è±¸ï¿½Ä¼ï¿½Â·ï¿½ï¿½. */
-/*#define AKM_DEVICE_NAME     "/dev/compass"
+/** akm sensor(M ºÍ O sensor) µÄ¿ØÖÆÉè±¸ÎÄ¼þÂ·¾¶. */
+#define AKM_DEVICE_NAME     "/dev/compass"
 #define PS_DEVICE_NAME      "/dev/psensor"
 #define LS_DEVICE_NAME      "/dev/lightsensor"
 #define GY_DEVICE_NAME      "/dev/gyrosensor"
 #define PR_DEVICE_NAME      "/dev/pressure"
-#define TMP_DEVICE_NAME     "/dev/temperature"*/
+#define TMP_DEVICE_NAME     "/dev/temperature"
 
 
 
@@ -97,7 +97,7 @@ int init_nusensors(hw_module_t const* module, hw_device_t** device);
 #define EVENT_TYPE_ACCEL_Y          ABS_Y
 #define EVENT_TYPE_ACCEL_Z          ABS_Z
 #define EVENT_TYPE_ACCEL_STATUS     ABS_WHEEL
-/*
+
 #define EVENT_TYPE_YAW              ABS_RX
 #define EVENT_TYPE_PITCH            ABS_RY
 #define EVENT_TYPE_ROLL             ABS_RZ
@@ -112,7 +112,7 @@ int init_nusensors(hw_module_t const* module, hw_device_t** device);
 #define EVENT_TYPE_TEMPERATURE      ABS_THROTTLE
 #define EVENT_TYPE_STEP_COUNT       ABS_GAS
 #define EVENT_TYPE_PROXIMITY        ABS_DISTANCE
-#define EVENT_TYPE_LIGHT            ABS_MISC*/
+#define EVENT_TYPE_LIGHT            ABS_MISC
 
 #define EVENT_TYPE_GYRO_X           REL_RX
 #define EVENT_TYPE_GYRO_Y           REL_RY
@@ -122,7 +122,7 @@ int init_nusensors(hw_module_t const* module, hw_device_t** device);
 
 
 
-/** ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ ï¿½ï¿½ï¿½Ù¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½, Android ï¿½Ï²ï¿½Ê¹ï¿½Ãµï¿½ ï¿½ï¿½Öµ ï¿½ï¿½ sensor ï¿½ï¿½ï¿½ï¿½ï¿½è±¸ï¿½Í³ï¿½ï¿½ï¿½ ï¿½ï¿½Öµ ï¿½ï¿½ ï¿½ï¿½Öµ. */
+/** ±íÕ÷ÏàÍ¬µÄ ¼ÓËÙ¶ÈÎïÀíÁ¿µÄÊ±ºò, Android ÉÏ²ãÊ¹ÓÃµÄ ÊýÖµ ºÍ sensor Êý¾ÝÉè±¸ËÍ³öµÄ ÊýÖµ µÄ ±ÈÖµ. */
 #define ACCELERATION_RATIO_ANDROID_TO_HW        (9.80665f / 1000000)
 
 /*-------------------------------------------------------*/
@@ -135,7 +135,7 @@ int init_nusensors(hw_module_t const* module, hw_device_t** device);
 #define CONVERT_A_X                 (CONVERT_A)
 #define CONVERT_A_Y                 (CONVERT_A)
 #define CONVERT_A_Z                 (CONVERT_A)
-/*
+
 // conversion of magnetic data (for AK8975) to uT units
 #define CONVERT_M                   (1.0f*0.06f)
 #define CONVERT_M_X                 (CONVERT_M)
@@ -146,7 +146,7 @@ int init_nusensors(hw_module_t const* module, hw_device_t** device);
 #define CONVERT_O                   (1.0f/64.0f)
 #define CONVERT_O_A                 (CONVERT_O)
 #define CONVERT_O_P                 (CONVERT_O)
-#define CONVERT_O_R                 (CONVERT_O)*/
+#define CONVERT_O_R                 (CONVERT_O)
 
 // conversion of gyro data to SI units (radian/sec)
 #define RANGE_GYRO                  (2000.0f*(float)M_PI/180.0f)

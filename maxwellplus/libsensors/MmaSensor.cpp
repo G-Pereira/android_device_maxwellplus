@@ -39,8 +39,8 @@ static int sKeyCtrl = -1;
 #define GSENSOR_IOCTL_KEYBOARD		        _IOW(GSENSOR_IOCTL_MAGIC, 0x11, int[2] )
 #define ANGLE_VALID_COUNT	5
 static int angle_open_device(void)
-{
-    if (sAngleFd < 0)<
+{	
+    if (sAngleFd < 0) 
     {
 		sAngleFd = open("/dev/angle", O_RDWR);
 		if(sAngleFd < 0)
@@ -50,7 +50,7 @@ static int angle_open_device(void)
 		}
     }
 
-	if (sAccFd < 0)
+	if (sAccFd < 0) 
     {
 		sAccFd = open(MMA_DEVICE_NAME, O_RDWR);
 		if(sAccFd < 0)
@@ -60,7 +60,7 @@ static int angle_open_device(void)
 		}
     }
 #if 0
-	if (sCtrlFd < 0)
+	if (sCtrlFd < 0) 
     {
 		sCtrlFd = open("/dev/ec", O_RDWR);
 		if(sCtrlFd < 0)
@@ -93,30 +93,30 @@ static int angle_close_device(void)
         close(sCtrlFd);
         sCtrlFd = -1;
     }
-#endif
+#endif	
 	ALOGD("%s\n",__FUNCTION__);
 	return 0;
 }
 
 static int angle_enable(int32_t handle, int en)
-{
+{	
 	int sample_rate = MMA8452_RATE_12P5;
-
-    if (sAngleFd < 0)
+	
+    if (sAngleFd < 0) 
     {
 		ALOGE("%s:line=%d,error: sAngleFd=%d\n",__FUNCTION__, __LINE__, sAngleFd);
 		return -1;
     }
-
+	
 	if(en)
 	{
-		if ( 0 > ioctl(sAngleFd, GSENSOR_IOCTL_START) )
+		if ( 0 > ioctl(sAngleFd, GSENSOR_IOCTL_START) ) 
 		{
 			ALOGE("%s:line=%d,error=%s\n",__FUNCTION__, __LINE__, strerror(errno));
 			return -1;
 		}
 
-		if ( 0 > ioctl(sAngleFd, GSENSOR_IOCTL_APP_SET_RATE, &sample_rate) )
+		if ( 0 > ioctl(sAngleFd, GSENSOR_IOCTL_APP_SET_RATE, &sample_rate) ) 
 		{
 			ALOGE("%s:line=%d,error=%s\n",__FUNCTION__, __LINE__, strerror(errno));
 			return -1;
@@ -124,7 +124,7 @@ static int angle_enable(int32_t handle, int en)
 	}
 	else
 	{
-		if ( 0 > ioctl(sAngleFd, GSENSOR_IOCTL_CLOSE) )
+		if ( 0 > ioctl(sAngleFd, GSENSOR_IOCTL_CLOSE) ) 
 		{
 			ALOGE("%s:line=%d,error=%s\n",__FUNCTION__, __LINE__, strerror(errno));
 			return -1;
@@ -142,19 +142,19 @@ static int angle_get_acc_data(float angleData[3], float accData[3])
 {
     struct sensor_axis angle = {0, 0, 0};
     struct sensor_axis acc = {0, 0, 0};
-
-	if (sAngleFd < 0)
+	
+	if (sAngleFd < 0) 
     {
 		ALOGE("%s:line=%d,error: sAngleFd=%d\n",__FUNCTION__, __LINE__, sAngleFd);
 		return -1;
     }
 
-	if (sAccFd < 0)
+	if (sAccFd < 0) 
     {
 		ALOGE("%s:line=%d,error: sAngleFd=%d\n",__FUNCTION__, __LINE__, sAngleFd);
 		return -1;
     }
-
+	
 	if ( 0 > ioctl(sAngleFd, GSENSOR_IOCTL_GETDATA, &angle) )
 	{
 		ALOGE("%s:line=%d,error=%s\n",__FUNCTION__, __LINE__, strerror(errno));
@@ -175,15 +175,15 @@ static int angle_get_acc_data(float angleData[3], float accData[3])
     accData[1] = ( -(acc.x) * ACCELERATION_RATIO_ANDROID_TO_HW);
     accData[2] = ( (acc.z) * ACCELERATION_RATIO_ANDROID_TO_HW);
 
-
+	
 	return 0;
 }
 
 
 static float angle_pitch_to_angle(float pitch, float accData)
-{
+{	
 	float angle = 0.0f;
-
+	
 	if((pitch >= 0) && (accData > 0))
 	{
 		pitch = pitch;
@@ -201,7 +201,7 @@ static float angle_pitch_to_angle(float pitch, float accData)
 		pitch = 3.14159f - pitch;
 	}
 
-	angle = pitch * 180 / 3.14159f;
+	angle = pitch * 180 / 3.14159f;	
 
 	return angle;
 
@@ -213,7 +213,7 @@ static int angle_calc_angle(void)
 	int ret = 0;
 
 	float angleData[3],accData[3];
-	float anglePitch, angleRoll;
+	float anglePitch, angleRoll;	
 	float accPitch, accRoll;
 	int angle[2];
 	int keyCtrl[2] = {0,0};
@@ -238,10 +238,10 @@ static int angle_calc_angle(void)
 
 	accPitch = angle_pitch_to_angle(accPitch, accData[2]);
 	accRoll = angle_pitch_to_angle(accRoll, accData[2]);
-
+	
 	if(anglePitch > accPitch)
 	angle[0] = (int)(anglePitch - accPitch);
-	else
+	else	
 	angle[0] = (int)((anglePitch - accPitch) + 360) % 360;
 
 	if(angleRoll > accRoll)
@@ -255,7 +255,7 @@ static int angle_calc_angle(void)
 
 	if(angle[1] >= 355)
 		angle[1] = fabs((360 - angle[1]));
-
+	
 	//control key board
 	if(fabs(angle[0]) > 185)
 	{
@@ -263,37 +263,37 @@ static int angle_calc_angle(void)
 		sCountAngle[DISABLE_KEY]++;
 		sCountAngle[ENABLE_KEY] = 0;
 	}
-	else if(fabs(angle[0]) < 180)
+	else if(fabs(angle[0]) < 180)	
 	{
-		keyCtrl[0] = 1;	//open keyboard
+		keyCtrl[0] = 1;	//open keyboard	
 		sCountAngle[ENABLE_KEY]++;
 		sCountAngle[DISABLE_KEY] = 0;
 	}
 	//else
 	//ALOGE("%s:do nothing\n",__func__);
-
+		
 	keyCtrl[1] = angle[0];
-
-
+	
+	
 	if((sCountAngle[DISABLE_KEY] > ANGLE_VALID_COUNT) || (sCountAngle[ENABLE_KEY] > ANGLE_VALID_COUNT))
 	{
 		if(sKeyCtrl != keyCtrl[0])
 		{
 #if 0
-			if (sCtrlFd < 0)
+			if (sCtrlFd < 0) 
 			{
 				ALOGE("%s:line=%d,error: sAngleFd=%d\n",__FUNCTION__, __LINE__, sCtrlFd);
 				return -1;
 			}
-
+			
 			if ( 0 > ioctl(sCtrlFd, GSENSOR_IOCTL_KEYBOARD, keyCtrl) )
 			{
 				ALOGE("%s:line=%d,error=%s\n",__FUNCTION__, __LINE__, strerror(errno));
 				return -1;
 			}
 #endif
-			ALOGD("%s:angleData x=%f, y=%f, z=%f, accData x=%f, y=%f, z=%f\n", __FUNCTION__, angleData[0], angleData[1], angleData[2], accData[0],accData[1],accData[2]);
-			ALOGD("%s:anglePitch=%f, accPitch=%f, angleRoll=%f, accRoll=%f\n", __FUNCTION__, anglePitch, accPitch, angleRoll, accRoll);
+			ALOGD("%s:angleData x=%f, y=%f, z=%f, accData x=%f, y=%f, z=%f\n", __FUNCTION__, angleData[0], angleData[1], angleData[2], accData[0],accData[1],accData[2]);	
+			ALOGD("%s:anglePitch=%f, accPitch=%f, angleRoll=%f, accRoll=%f\n", __FUNCTION__, anglePitch, accPitch, angleRoll, accRoll);	
 			ALOGD("%s:angle[0]=%d, angle[1]=%d\n", __FUNCTION__, angle[0], angle[1]);
 
 			sKeyCtrl = keyCtrl[0];
@@ -306,7 +306,7 @@ static int angle_calc_angle(void)
 			sCountAngle[ENABLE_KEY] = 0;
 
 	}
-
+	
 	return 0;
 }
 
@@ -336,7 +336,7 @@ MmaSensor::MmaSensor()
     short flags = 0;
 
     open_device();
-
+	
 #if defined(ANGLE_SUPPORT)
 	angle_open_device();
 #endif
@@ -357,7 +357,7 @@ int MmaSensor::enable(int32_t handle, int en)
 	D("Entered : handle = 0x%x, en = 0x%x.", handle, en);
     int what = -1;
     switch (handle) {
-        case ID_A :
+        case ID_A : 
             what = Accelerometer;
             break;
         default :
@@ -374,12 +374,12 @@ int MmaSensor::enable(int32_t handle, int en)
 	I("newState = 0x%x, what = 0x%x, mEnabled = 0x%x.", newState, what, mEnabled);
     if ((uint32_t(newState)<<what) != (mEnabled & (1<<what))) {
         if (!mEnabled) {
-            open_device();
+            open_device();			
 			#if defined(ANGLE_SUPPORT)
 			angle_open_device();
 			#endif
         }
-
+       
 		if ( 1 == newState ) {
             I("to call 'GSENSOR_IOCTL_START'.");
 			if ( 0 > (err = ioctl(dev_fd, GSENSOR_IOCTL_START) ) ) {
@@ -397,7 +397,7 @@ int MmaSensor::enable(int32_t handle, int en)
             mEnabled &= ~(1 << what);
 		}
 
-		#if defined(ANGLE_SUPPORT)
+		#if defined(ANGLE_SUPPORT)	
 		err = angle_enable(handle, en);
 		if(err < 0)
 		{
@@ -464,7 +464,7 @@ int MmaSensor::update_delay()
 		else if ( sample_rate <= 13 ) {
 				acceptable_sample_rate = MMA8452_RATE_12P5;
 		}
-		else {
+		else {   
 				acceptable_sample_rate = MMA8452_RATE_50;
 		}
 		D("acceptable_sample_rate = %d", acceptable_sample_rate);
@@ -478,7 +478,7 @@ int MmaSensor::update_delay()
 
 int MmaSensor::readEvents(sensors_event_t* data, int count)
 {
-	#if defined(ANGLE_SUPPORT)
+	#if defined(ANGLE_SUPPORT)	
 	int err = 0;
 	#endif
 	D("Entered : count = %d.", count);
@@ -489,7 +489,7 @@ int MmaSensor::readEvents(sensors_event_t* data, int count)
     if (n < 0)
         return n;
 
-    int numEventReceived = 0;       /* ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½Üµï¿½ event ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. */
+    int numEventReceived = 0;       /* ÒÑ¾­½ÓÊÜµÄ event µÄÊýÁ¿, ´ý·µ»Ø. */
     input_event const* event;
 
     while (count && mInputReader.readEvent(&event)) {
@@ -516,15 +516,15 @@ int MmaSensor::readEvents(sensors_event_t* data, int count)
             if (!mPendingMask) {
                 mInputReader.next();
             }
-
-			#if defined(ANGLE_SUPPORT)
+			
+			#if defined(ANGLE_SUPPORT)	
 			err = angle_calc_angle();
 			if(err < 0)
 			{
 				ALOGE("%s:line=%d,error=%d\n",__FUNCTION__, __LINE__, err);
 			}
 			#endif
-
+			
         } else {
             LOGE("MmaSensor: unknown event (type=%d, code=%d)",
                     type, event->code);
@@ -553,3 +553,4 @@ void MmaSensor::processEvent(int code, int value)
             break;
     }
 }
+

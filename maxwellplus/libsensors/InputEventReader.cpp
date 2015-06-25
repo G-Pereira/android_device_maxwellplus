@@ -103,3 +103,4 @@ void InputEventCircularReader::dumpEvents(input_event const * events, int events
         D("event '%d' : type : 0x%x, code : 0x%x.", i, current->type, current->code);
     }
 };
+
