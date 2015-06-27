@@ -32,7 +32,8 @@ BOARD_FLASH_BLOCK_SIZE := 16384
 
 # Kernel
 TARGET_KERNEL_SOURCE := kernel/bq/maxwellplus
-TARGET_KERNEL_CONFIG := cyanogenmod_maxwellplus_defconfig
+
+TARGET_KERNEL_CONFIG := slim_maxwellplus_defconfig
 
 # USB Mounting
 TARGET_USE_CUSTOM_LUN_FILE_PATH := /sys/class/android_usb/android0/f_mass_storage/lun/file
