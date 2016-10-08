@@ -15,10 +15,10 @@ Use the following local manifest:
       <remove-project name="SlimRoms/bootable_recovery" />
       <remove-project name="SlimRoms/packages_apps_SlimLauncher" />
       <project name="TeamWin/Team-Win-Recovery-Project" path="bootable/recovery" revision="android-5.1" remote="github" />
-      <project name="thebigcako/android_framework_av_maxwellplus" path="frameworks/av" revision="slimkat" remote="github" />
-      <project name="thebigcako/android_device_maxwellplus" path="device/bq/" revision="slimkat" remote="github"/>
-      <project name="thebigcako/android_kernel_maxwellplus" path="kernel/bq/maxwellplus" revision="slimkat" remote="github" />
-      <project name="thebigcako/android_vendor_maxwellplus" path="vendor/bq" revision="slimkat" remote="github" />
+      <project name="G-Pereira/android_framework_av_maxwellplus" path="frameworks/av" revision="slimkat" remote="github" />
+      <project name="G-Pereira/android_device_maxwellplus" path="device/bq/" revision="slimkat" remote="github"/>
+      <project name="G-Pereira/android_kernel_maxwellplus" path="kernel/bq/maxwellplus" revision="slimkat" remote="github" />
+      <project name="G-Pereira/android_vendor_maxwellplus" path="vendor/bq" revision="slimkat" remote="github" />
     </manifest>
 
 Sync and build:
@@ -27,5 +27,4 @@ Sync and build:
     . build/envsetup.sh
     brunch maxwellplus
 
-
-Creditos para Kra1o5, pirinvk y onomatopellan
+With the help of Kra1o5, pirinvk, onomatopellan and thebigcako
